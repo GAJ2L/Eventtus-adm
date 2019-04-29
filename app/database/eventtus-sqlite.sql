@@ -26,6 +26,17 @@ FOREIGN KEY(atividade_id) REFERENCES atividade(id));
  PRIMARY KEY (id),
 FOREIGN KEY(evento_id) REFERENCES evento(id)); 
 
+ CREATE TABLE atividade_interacao( 
+      id  INTEGER    NOT NULL  , 
+      dt_registro datetime   NOT NULL  , 
+      mensagem text   NOT NULL  , 
+      fl_aprovado text   , 
+      atividade_id int   NOT NULL  , 
+      pessoa_id int   NOT NULL  , 
+ PRIMARY KEY (id),
+FOREIGN KEY(pessoa_id) REFERENCES pessoa(id),
+FOREIGN KEY(atividade_id) REFERENCES atividade(id)); 
+
  CREATE TABLE avaliacao_atividade( 
       id  INTEGER    NOT NULL  , 
       inscricao_atividade_id int   NOT NULL  , 

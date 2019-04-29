@@ -43,7 +43,7 @@ class SystemAccessLog extends TRecord
             TTransaction::open('log');
         }
         
-        $object = new self;
+        $object = new SystemAccessLog;
         $object->login = TSession::getValue('login');
         $object->sessionid = session_id();
         $object->login_time = date("Y-m-d H:i:s");

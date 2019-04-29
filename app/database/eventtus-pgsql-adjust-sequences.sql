@@ -1,5 +1,6 @@
 SELECT setval('anexo_id_seq', coalesce(max(id),0) + 1, false) FROM anexo;
 SELECT setval('atividade_id_seq', coalesce(max(id),0) + 1, false) FROM atividade;
+SELECT setval('atividade_interacao_id_seq', coalesce(max(id),0) + 1, false) FROM atividade_interacao;
 SELECT setval('avaliacao_atividade_id_seq', coalesce(max(id),0) + 1, false) FROM avaliacao_atividade;
 SELECT setval('avaliacao_evento_id_seq', coalesce(max(id),0) + 1, false) FROM avaliacao_evento;
 SELECT setval('evento_id_seq', coalesce(max(id),0) + 1, false) FROM evento;

@@ -56,6 +56,15 @@ class Atividade extends TRecord
     }
 
     /**
+     * Method getAtividadeInteracaos
+     */
+    public function getAtividadeInteracaos()
+    {
+        $criteria = new TCriteria;
+        $criteria->add(new TFilter('atividade_id', '=', $this->id));
+        return AtividadeInteracao::getObjects( $criteria );
+    }
+    /**
      * Method getNotificacaoAtividades
      */
     public function getNotificacaoAtividades()

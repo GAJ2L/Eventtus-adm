@@ -22,6 +22,15 @@ CREATE TABLE anexo(
       dt_fim datetime2   , 
  PRIMARY KEY (id)); 
 
+ CREATE TABLE atividade_interacao( 
+      id  INT IDENTITY    NOT NULL  , 
+      dt_registro datetime2   NOT NULL  , 
+      mensagem nvarchar(max)   NOT NULL  , 
+      fl_aprovado bit   , 
+      atividade_id int   NOT NULL  , 
+      pessoa_id int   NOT NULL  , 
+ PRIMARY KEY (id)); 
+
  CREATE TABLE avaliacao_atividade( 
       id  INT IDENTITY    NOT NULL  , 
       inscricao_atividade_id int   NOT NULL  , 
@@ -147,6 +156,8 @@ CREATE TABLE anexo(
   
  ALTER TABLE anexo ADD CONSTRAINT fk_anexo_1 FOREIGN KEY (atividade_id) references atividade(id); 
 ALTER TABLE atividade ADD CONSTRAINT fk_atividade_1 FOREIGN KEY (evento_id) references evento(id); 
+ALTER TABLE atividade_interacao ADD CONSTRAINT fk_atividade_interacao_2 FOREIGN KEY (pessoa_id) references pessoa(id); 
+ALTER TABLE atividade_interacao ADD CONSTRAINT fk_atividade_interacao_1 FOREIGN KEY (atividade_id) references atividade(id); 
 ALTER TABLE avaliacao_atividade ADD CONSTRAINT fk_avaliacao_atividade_1 FOREIGN KEY (inscricao_atividade_id) references inscricao_atividade(id); 
 ALTER TABLE avaliacao_evento ADD CONSTRAINT fk_avaliacao_evento_1 FOREIGN KEY (inscricao_id) references inscricao(id); 
 ALTER TABLE evento ADD CONSTRAINT fk_evento_1 FOREIGN KEY (responsavel_id) references pessoa(id); 

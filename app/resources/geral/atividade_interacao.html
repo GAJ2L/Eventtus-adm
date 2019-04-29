@@ -1,0 +1,105 @@
+<!--[main]-->
+<style type="text/css">
+	.container-mensagens {
+		max-width: 750px;
+	    margin: auto;
+	    border: 1px solid #e0e0e0;
+	    border-radius: 5px;
+	    min-height: calc( 100vh - 100px );
+
+	}
+
+	.messages {
+	    padding: 0 25px 20px 20px;
+	}
+	.messages div {
+	    background: #e0e0e0;
+	    padding: 10px 10px 1px 10px;
+	    border-radius: 5px;
+	    margin: 5px 10px 15px 10px;
+	}
+
+	.message {
+	    position: relative;
+	}
+
+	.title {
+		background: #154590;
+		color: white;
+		text-align: center;
+		font-size: 20px;
+		padding: 20px 0px;
+		position: fixed;
+		width: 100%;
+	    top: 0;
+	    left: 0;
+	    margin: auto;
+	}
+
+	.message-info {
+		display: flex;
+	}
+
+	.message-info > div {
+		margin: 0 0 0 auto;
+		font-size: 12px;
+		text-align: right;
+		padding: 0px !important;
+    	margin: 0px 0px 0px auto !important;
+	}
+</style>
+
+<!--[atividade]-->
+<link href="lib/bootstrap/css/bootstrap.min.css?afver=20180809" rel="stylesheet" type="text/css" media="screen" />
+<script src="lib/jquery/jquery.min.js?afver=20180809" type="text/javascript"></script>
+
+<meta name="viewport" content="width=device-width, user-scalable=no">
+<div id="nav" class="title">
+  	{$nome}
+</div>
+<div id='content' class="container-mensagens">
+	<div class="messages">
+		<!--[mensagem]-->
+		<div class="menssage">
+			{$mensagem}
+			<div class="message-info">
+				<div>{$nome} - {$dt_registro}</div>
+			</div>
+		</div>
+		<!--[/mensagem]-->
+	</div>
+</div>
+
+<script type="text/javascript">
+
+	$(function() {
+        // update_notifications_menu();
+
+        // setInterval(update_notifications_menu, 5000);
+    });
+
+    function update_notifications_menu() {
+        $.get('engine.php?class=AtividadeInteracaoService&method=getUltimasInteracoesHTML&static=1&atividade_id={$id}', function(data) {
+            console.log(data);
+            $('.messages').append(data);
+        });
+    }
+
+
+	window.onresize = function(){
+		ajust();
+	};
+
+
+	$(document).ready(function(){
+		ajust();
+		$('body').scrollTop( $('.messages').find('.menssage:last').offset().top );
+	});
+
+	function ajust() {
+		var height = document.getElementById("nav").offsetHeight;
+		document.getElementById("content").style.marginTop = height + 'px';
+	}
+</script>
+<!--[/atividade]-->
+<!--[/main]-->

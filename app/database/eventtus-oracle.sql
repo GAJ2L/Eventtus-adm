@@ -22,6 +22,15 @@ CREATE TABLE anexo(
       dt_fim timestamp(0)   , 
  PRIMARY KEY (id)); 
 
+ CREATE TABLE atividade_interacao( 
+      id number(10)    NOT NULL , 
+      dt_registro timestamp(0)    NOT NULL , 
+      mensagem CLOB    NOT NULL , 
+      fl_aprovado char(1)   , 
+      atividade_id number(10)    NOT NULL , 
+      pessoa_id number(10)    NOT NULL , 
+ PRIMARY KEY (id)); 
+
  CREATE TABLE avaliacao_atividade( 
       id number(10)    NOT NULL , 
       inscricao_atividade_id number(10)    NOT NULL , 
@@ -147,6 +156,8 @@ CREATE TABLE anexo(
   
  ALTER TABLE anexo ADD CONSTRAINT fk_anexo_1 FOREIGN KEY (atividade_id) references atividade(id); 
 ALTER TABLE atividade ADD CONSTRAINT fk_atividade_1 FOREIGN KEY (evento_id) references evento(id); 
+ALTER TABLE atividade_interacao ADD CONSTRAINT fk_atividade_interacao_2 FOREIGN KEY (pessoa_id) references pessoa(id); 
+ALTER TABLE atividade_interacao ADD CONSTRAINT fk_atividade_interacao_1 FOREIGN KEY (atividade_id) references atividade(id); 
 ALTER TABLE avaliacao_atividade ADD CONSTRAINT fk_avaliacao_atividade_1 FOREIGN KEY (inscricao_atividade_id) references inscricao_atividade(id); 
 ALTER TABLE avaliacao_evento ADD CONSTRAINT fk_avaliacao_evento_1 FOREIGN KEY (inscricao_id) references inscricao(id); 
 ALTER TABLE evento ADD CONSTRAINT fk_evento_1 FOREIGN KEY (responsavel_id) references pessoa(id); 
@@ -192,6 +203,21 @@ WHEN
 BEGIN 
 
 SELECT atividade_id_seq.NEXTVAL INTO :NEW.id FROM DUAL; 
+
+END;
+CREATE SEQUENCE atividade_interacao_id_seq START WITH 1 INCREMENT BY 1; 
+
+CREATE OR REPLACE TRIGGER atividade_interacao_id_seq_tr 
+
+BEFORE INSERT ON atividade_interacao FOR EACH ROW 
+
+WHEN 
+
+(NEW.id IS NULL) 
+
+BEGIN 
+
+SELECT atividade_interacao_id_seq.NEXTVAL INTO :NEW.id FROM DUAL; 
 
 END;
 CREATE SEQUENCE avaliacao_atividade_id_seq START WITH 1 INCREMENT BY 1; 

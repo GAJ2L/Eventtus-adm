@@ -25,6 +25,15 @@ class Pessoa extends TRecord
     }
 
     /**
+     * Method getAtividadeInteracaos
+     */
+    public function getAtividadeInteracaos()
+    {
+        $criteria = new TCriteria;
+        $criteria->add(new TFilter('pessoa_id', '=', $this->id));
+        return AtividadeInteracao::getObjects( $criteria );
+    }
+    /**
      * Method getEventos
      */
     public function getEventos()

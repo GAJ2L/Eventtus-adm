@@ -831,7 +831,7 @@ class TDataGrid extends TTable
                 if ($totalFunction)
                 {
                     $has_total = true;
-                    $content   = $totalFunction($this->columnValues[$name]);
+                    $content   = $totalFunction($this->columnValues[$name], $this->objects);
                     
                     if ($transformer)
                     {

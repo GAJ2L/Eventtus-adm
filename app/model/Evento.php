@@ -87,6 +87,14 @@ class Evento extends TRecord
         return Inscricao::getObjects( $criteria );
     }
 
-    
+    public function store()
+    {
+        if(!$this->contato_telefone) {
+            #fix-me to phpunit error
+            // $this->contato_telefone = '999999999999';
+        }
+
+        parent::store();
+    }   
 }
 

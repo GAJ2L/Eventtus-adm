@@ -9,6 +9,7 @@ return array(
     'Svg\\' => array($vendorDir . '/phenx/php-svg-lib/src'),
     'Spreadsheet' => array($vendorDir . '/pablodalloglio/spreadsheet_excel_writer'),
     'Sabberworm\\CSS' => array($vendorDir . '/sabberworm/php-css-parser/lib'),
+    'Prophecy\\' => array($vendorDir . '/phpspec/prophecy/src'),
     'PHPRtfLite' => array($vendorDir . '/phprtflite/phprtflite/lib'),
     'OLE' => array($vendorDir . '/pablodalloglio/ole'),
     'BaconQrCode' => array($vendorDir . '/bacon/bacon-qr-code/src'),

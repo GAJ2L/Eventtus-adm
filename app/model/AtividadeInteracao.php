@@ -78,6 +78,14 @@ class AtividadeInteracao extends TRecord
         return $this->atividade;
     }
 
-    
+    public function store()
+    {
+        if(is_null($this->fl_aprovado)) {
+            #fix-me to phpunit error
+            // $this->fl_aprovado = TRUE;
+        }
+
+        parent::store();
+    }    
 }
 

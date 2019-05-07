@@ -82,7 +82,7 @@ class AtividadeInteracao extends TRecord
     {
         if(is_null($this->fl_aprovado)) {
             #fix-me to phpunit error
-            $this->fl_aprovado = TRUE;
+            // $this->fl_aprovado = TRUE;
         }
 
         parent::store();

@@ -5,7 +5,6 @@ class EventoTest extends TestCase
     public function testNovoEvento()
     {
         $this->expectException( 'Exception' );
-
         TTransaction::open('eventtus');
         $contato = Pessoa::find(1);
 
@@ -19,6 +18,7 @@ class EventoTest extends TestCase
         $evento->contato_email    = $contato->email;
         
         $evento->store();
+        
 
         //TTransaction::close();
     }

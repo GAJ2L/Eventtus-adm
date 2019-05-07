@@ -49,7 +49,7 @@ class EventoForm extends TPage
         $contato_telefone->addValidation('Telefone', new TRequiredValidator()); 
 
         $id->setEditable(false);
-        $responsavel_id->enableSearch();
+        // $responsavel_id->enableSearch();
 
         $dt_fim->setDatabaseMask('yyyy-mm-dd hh:ii');
         $dt_inicio->setDatabaseMask('yyyy-mm-dd hh:ii');

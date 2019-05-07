@@ -45,9 +45,6 @@ class AtividadeForm extends TPage
 
         $id->setEditable(false);
 
-        $evento_id->enableSearch();
-        $responsaveis_atividade_atividade_usuario_id->enableSearch();
-
         $dt_fim->setMask('dd/mm/yyyy hh:ii');
         $dt_inicio->setMask('dd/mm/yyyy hh:ii');
 

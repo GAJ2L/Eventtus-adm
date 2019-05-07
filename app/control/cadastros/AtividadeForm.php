@@ -45,11 +45,11 @@ class AtividadeForm extends TPage
 
         $id->setEditable(false);
 
-        $dt_fim->setMask('dd/mm/yyyy hh:ii');
-        $dt_inicio->setMask('dd/mm/yyyy hh:ii');
+        // $dt_fim->setMask('dd/mm/yyyy hh:ii');
+        // $dt_inicio->setMask('dd/mm/yyyy hh:ii');
 
-        $dt_fim->setDatabaseMask('yyyy-mm-dd hh:ii');
-        $dt_inicio->setDatabaseMask('yyyy-mm-dd hh:ii');
+        // $dt_fim->setDatabaseMask('yyyy-mm-dd hh:ii');
+        // $dt_inicio->setDatabaseMask('yyyy-mm-dd hh:ii');
 
         $id->setSize(160);
         $nome->setSize('99%');

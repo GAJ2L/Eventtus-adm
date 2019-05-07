@@ -27,8 +27,8 @@ class EventoForm extends TPage
 
         $id = new TEntry('id');
         $nome = new TEntry('nome');
-        $dt_inicio = new TDateTime('dt_inicio');
-        $dt_fim = new TDateTime('dt_fim');
+        $dt_inicio = new TEntry('dt_inicio');
+        $dt_fim = new TEntry('dt_fim');
         $cor = new TColor('cor');
         $responsavel_id = new TDBCombo('responsavel_id', 'eventtus', 'Pessoa', 'id', '{nome}','id asc'  );
         $nome_en = new TEntry('nome_en');
@@ -51,14 +51,14 @@ class EventoForm extends TPage
         $id->setEditable(false);
         // $responsavel_id->enableSearch();
 
-        $dt_fim->setDatabaseMask('yyyy-mm-dd hh:ii');
-        $dt_inicio->setDatabaseMask('yyyy-mm-dd hh:ii');
+        // $dt_fim->setDatabaseMask('yyyy-mm-dd hh:ii');
+        // $dt_inicio->setDatabaseMask('yyyy-mm-dd hh:ii');
 
         $logo->enableFileHandling();
         $banner->enableFileHandling();
 
-        $dt_fim->setMask('dd/mm/yyyy hh:ii');
-        $dt_inicio->setMask('dd/mm/yyyy hh:ii');
+        // $dt_fim->setMask('dd/mm/yyyy hh:ii');
+        // $dt_inicio->setMask('dd/mm/yyyy hh:ii');
         $contato_telefone->setMask('(99)99999-9999');
 
         $cor->setSize(100);

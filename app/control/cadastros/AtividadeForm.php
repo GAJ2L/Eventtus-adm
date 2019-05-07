@@ -30,8 +30,8 @@ class AtividadeForm extends TPage
         $nome = new TEntry('nome');
         $local_nome = new TEntry('local_nome');
         $nome_en = new TEntry('nome_en');
-        $dt_inicio = new TDateTime('dt_inicio');
-        $dt_fim = new TDateTime('dt_fim');
+        $dt_inicio = new TEntry('dt_inicio');
+        $dt_fim = new TEntry('dt_fim');
         $descricao = new TEntry('descricao');
         $descricao_en = new TEntry('descricao_en');
         $local_geolocalizacao = new TEntry('local_geolocalizacao');

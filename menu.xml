@@ -7,6 +7,10 @@
         <icon>fa:cog fa-fw </icon>
         <action>InscricaoList#method=onShow</action>
       </menuitem>
+       <menuitem label="Inscrições via CSV">
+        <icon>fa:cog fa-fw </icon>
+        <action>InscricaoUploadForm#method=onShow</action>
+      </menuitem>
     </menu>
   </menuitem>
   <menuitem label="Cadastros">

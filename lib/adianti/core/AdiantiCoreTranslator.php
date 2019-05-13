@@ -26,6 +26,7 @@ class AdiantiCoreTranslator
         $this->messages['en'][] = 'Search';
         $this->messages['en'][] = 'Register';
         $this->messages['en'][] = 'Record saved';
+        $this->messages['en'][] = 'Records saved';
         $this->messages['en'][] = 'Do you really want to delete ?';
         $this->messages['en'][] = 'Record deleted';
         $this->messages['en'][] = 'Records deleted';
@@ -135,6 +136,7 @@ class AdiantiCoreTranslator
         $this->messages['pt'][] = 'Buscar';
         $this->messages['pt'][] = 'Registrar';
         $this->messages['pt'][] = 'Registro salvo';
+        $this->messages['pt'][] = 'Registros salvos';
         $this->messages['pt'][] = 'Deseja realmente excluir ?';
         $this->messages['pt'][] = 'Registro excluído';
         $this->messages['pt'][] = 'Registros excluídos';

@@ -22,7 +22,7 @@ class AtividadeForm extends TPage
         // creates the form
         $this->form = new BootstrapFormBuilder(self::$formName);
         // define the form title
-        $this->form->setFormTitle('Atividade');
+        $this->form->setFormTitle('Cadastro de Atividade');
 
 
         $id = new TEntry('id');
@@ -107,6 +107,7 @@ class AtividadeForm extends TPage
         $btn_onsave->addStyleClass('btn-primary'); 
 
         $btn_onclear = $this->form->addAction('Limpar formulário', new TAction([$this, 'onClear']), 'fa:eraser #dd5a43');
+        $this->form->addAction(_t('Back'),new TAction(array('AtividadeList','onReload')),'fa:arrow-circle-o-left blue');
 
         // vertical box container
         $container = new TVBox;

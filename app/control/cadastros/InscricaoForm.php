@@ -20,7 +20,7 @@ class InscricaoForm extends TPage
         // creates the form
         $this->form = new BootstrapFormBuilder(self::$formName);
         // define the form title
-        $this->form->setFormTitle('Inscrição');
+        $this->form->setFormTitle('Inscrição no Evento');
 
 
         $id = new TEntry('id');
@@ -51,6 +51,7 @@ class InscricaoForm extends TPage
         $btn_onsave->addStyleClass('btn-primary'); 
 
         $btn_onclear = $this->form->addAction('Limpar formulário', new TAction([$this, 'onClear']), 'fa:eraser #dd5a43');
+        $this->form->addAction(_t('Back'),new TAction(array('InscricaoList','onReload')),'fa:arrow-circle-o-left blue');
 
         // vertical box container
         $container = new TVBox;

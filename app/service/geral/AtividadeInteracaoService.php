@@ -7,6 +7,31 @@ class AtividadeInteracaoService
         parent::__construct();
     }
     
+    /**
+     * Busca as ultimas interalções realizadas na atividade passado no parametro
+     * @param  int     $atividade_id Codigo da atividade
+     * @return array   retorna um array de objetos do tipo Atividade
+     *
+     * @author Lucas Tomasi
+     * @date   2019-05-28
+     */
+    public static function getInteracoes(int $atividade_id) : array
+    {
+        try
+        {
+            TTransaction::open('eventtus');
+            $interacoes = AtividadeInteracao::where('ref_atividade', '=',$atividade_id)->where('fl_aprovado', '=', 't')->load();
+            TTransaction::close();
+            
+            return $interacoes;
+        }
+        catch (Exception $e)
+        {
+            TTransaction::rollback();
+        }
+    }
+    
+    
     public static function getUltimasInteracoesHTML($param)
     {
         try

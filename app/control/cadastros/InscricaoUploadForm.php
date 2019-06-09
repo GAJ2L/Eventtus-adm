@@ -28,6 +28,14 @@ class InscricaoUploadForm extends TPage
         $this->form->addFields( [new TLabel(_t('File'))], [$filename] );
         $filename->setSize('80%');
 
+        $evento_id = new TDBCombo('evento_id', 'eventtus', 'Evento', 'id', '{nome}','id asc'  );
+        $evento_id->addValidation('Evento', new TRequiredValidator()); 
+        $evento_id->setSize('100%');
+
+        $row2 = $this->form->addFields([new TLabel('Evento', '#ff0000', '14px', null, '100%'),$evento_id]);
+       // $row2->layout = ['col-sm-6','col-sm-6'];
+
+
         // create the form actions
         $btn_onsave = $this->form->addAction('Salvar', new TAction([$this, 'onSave']), 'fa:floppy-o #ffffff');
         $btn_onsave->addStyleClass('btn-primary'); 
@@ -60,6 +68,7 @@ class InscricaoUploadForm extends TPage
 
             $data = $this->form->getData(); // get form data as array
             $arquivoRecebido = $data->filename;
+            $evento_id = $data->evento_id;
 
         
             $source_file   = 'tmp/'. $arquivoRecebido;
@@ -114,9 +123,10 @@ class InscricaoUploadForm extends TPage
 
                     $dataInscricao = array();
                     $dataInscricao['pessoa_id'] = $objectPessoa->id;
-                    $dataInscricao['evento_id'] = $dados[4];
+                    //$dataInscricao['evento_id'] = $dados[5];
+                    $dataInscricao['evento_id'] = $evento_id;
                     $dataInscricao['codigo'] = $dados[0];
-                    $dataInscricao['dt_ativacao'] = $dados[6];
+                    $dataInscricao['dt_ativacao'] = $dados[4];
                     
                     // load the objectInscricao with data
                     $objectInscricao = new Inscricao();  // create an empty object 

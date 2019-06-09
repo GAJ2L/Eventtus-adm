@@ -44,7 +44,7 @@ class AtividadeInteracaoSimpleList extends TPage
         $action_onAprovar->setUseButton(false);
         $action_onAprovar->setButtonClass('btn btn-default btn-sm');
         $action_onAprovar->setLabel('Aprovar');
-        $action_onAprovar->setImage('fa:check #065c0a');
+        $action_onAprovar->setImage('fa:gavel #065c0a');
         $action_onAprovar->setField(self::$primaryKey);
         $action_onAprovar->setDisplayCondition('AtividadeInteracaoSimpleList::teste');
         $action_onAprovar->setParameter('id', '{id}');
@@ -67,7 +67,7 @@ class AtividadeInteracaoSimpleList extends TPage
         // vertical box container
         $container = new TVBox;
         $container->style = 'width: 100%';
-        $container->add(TBreadCrumb::create(['Cadastros','Atividade']));
+       // $container->add(TBreadCrumb::create(['Cadastros','Atividade']));
         $container->add($panel);
 
         parent::add($container);

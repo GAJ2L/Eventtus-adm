@@ -11,6 +11,14 @@
         <icon>fa:cog fa-fw </icon>
         <action>InscricaoUploadForm#method=onShow</action>
       </menuitem>
+       <menuitem label="Aprovação de perguntas">
+        <icon>fa:envelope-o </icon>
+        <action>AtividadeInteracaoSimpleList#method=onShow</action>
+      </menuitem>
+       <menuitem label="Perguntas recebidas">
+        <icon>fa:envelope-o </icon>
+        <action>AtividadeInteracaoView#method=onShow</action>
+      </menuitem>
     </menu>
   </menuitem>
   <menuitem label="Cadastros">

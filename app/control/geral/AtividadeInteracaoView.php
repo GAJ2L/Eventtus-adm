@@ -3,16 +3,46 @@
 class AtividadeInteracaoView extends TPage
 {
     private $html;
+    protected $form;
+    private $formFields = [];
+    private static $database = 'eventtus';
+    private static $activeRecord = 'AtividadeInteracao';
+    private static $primaryKey = 'id';
+    private static $formName = 'form_AtividadeInteracao';
     /**
      * Class constructor
      * Creates the page
      */
-    function __construct()
+    function __construct( $param )
     {
         parent::__construct();
 
-        $this->html = new THtmlRenderer('app/resources/geral/atividade_interacao.html');
+       
+         // creates the form
+         $this->form = new BootstrapFormBuilder(self::$formName);
+         // define the form title
+         $this->form->setFormTitle('Visualizar Perguntas');
+        $atividade_id = new TDBCombo('atividade_id', 'eventtus', 'Atividade', 'id', '{id}','id asc'  );
+        $atividade_id->addValidation('Atividade', new TRequiredValidator()); 
+        $atividade_id->setSize('100%');
 
+        $row1 = $this->form->addFields([new TLabel('Atividade', '#ff0000', '14px', null, '100%'),$atividade_id]);
+        $row1->layout = [' col-sm-3',' col-sm-9'];
+
+
+        $btn_onload = $this->form->addAction('Visualizar perguntas', new TAction([$this, 'onLoad']), 'fa:floppy-o #ffffff');
+        $btn_onload->addStyleClass('btn-primary');
+
+        // vertical box container
+        $container = new TVBox;
+        $container->style = 'width: 100%';
+        $container->class = 'form-container';
+        // $container->add(new TXMLBreadCrumb('menu.xml', __CLASS__));
+        $container->add($this->form);
+
+        parent::add($container);
+
+        $this->html = new THtmlRenderer('app/resources/geral/atividade_interacao.html');
         parent::add($this->html);
     }
 
@@ -61,7 +91,7 @@ class AtividadeInteracaoView extends TPage
             $atividade_interacao->fl_aprovado = TRUE;
             $atividade_interacao->store();
             
-            new TMessage('info', 'Mensagem aprovado com sucesso!');
+            new TMessage('info', 'Mensagem aprovado com sucesso!', new TAction(['AtividadeInteracaoSimpleList', 'onShow']));
             
             TTransaction::close();
         }

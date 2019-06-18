@@ -19,20 +19,27 @@ class InscricaoUploadForm extends TPage
 
         // creates the form
         $this->form = new BootstrapFormBuilder(self::$formName);
+        $this->form->setFieldSizes('100%');
         // define the form title
         $this->form->setFormTitle('Cadastro de inscrição em evento por upload de documento');
 
         $filename = new TFile('filename');
         $filename->setService('SystemDocumentUploaderService');
 
-        $this->form->addFields( [new TLabel(_t('File'))], [$filename] );
+        $this->form->addFields( [new TLabel(_t('File')), $filename] );
         $filename->setSize('80%');
 
         $evento_id = new TDBCombo('evento_id', 'eventtus', 'Evento', 'id', '{nome}','id asc'  );
         $evento_id->addValidation('Evento', new TRequiredValidator()); 
+        $evento_id->setChangeAction(new TAction([$this, 'onChangeEvento']));
         $evento_id->setSize('100%');
 
+        $atividade_id = new TSelect('atividade_id');
+        // $atividade_id->addValidation('Evento', new TRequiredValidator()); 
+        $atividade_id->setSize('100%');
+
         $row2 = $this->form->addFields([new TLabel('Evento', '#ff0000', '14px', null, '100%'),$evento_id]);
+        $row2 = $this->form->addFields([new TLabel('Atividades', '', '14px', null, '100%'),$atividade_id]);
        // $row2->layout = ['col-sm-6','col-sm-6'];
 
 
@@ -51,6 +58,25 @@ class InscricaoUploadForm extends TPage
 
         parent::add($container);
 
+    }
+
+    public static function onChangeEvento($param)
+    {
+        TTransaction::open('eventtus');
+        $evento = new Evento($param['key']);
+        $atividades = $evento->getAtividades();
+        $a = [];
+        if($atividades)
+        {   
+            foreach ($atividades as $atividade)
+            {
+                $a[$atividade->id] = $atividade->nome;
+            }
+        }
+
+        TSelect::reload(self::$formName, 'atividade_id', $a);
+
+        TTransaction::close();
     }
 
     public function onSave($param = null) 

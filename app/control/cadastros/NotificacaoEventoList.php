@@ -25,7 +25,7 @@ class NotificacaoEventoList extends TPage
         $this->form->setFormTitle('Listagem de notificação eventos');
 
 
-        $evento_id = new TDBCombo('evento_id', 'eventtus', 'Evento', 'id', '{id}','id asc'  );
+        $evento_id = new TDBCombo('evento_id', 'eventtus', 'Evento', 'id', '{nome}','id asc'  );
         $dt_notificacao = new TDate('dt_notificacao');
 
         $dt_notificacao->setDatabaseMask('yyyy-mm-dd');

@@ -60,6 +60,9 @@ class InscricaoList extends TPage
         $column_id = new TDataGridColumn('id', 'Código', 'center' , '70px');
         $column_evento_nome = new TDataGridColumn('evento->nome', 'Evento', 'left');
         $column_pessoa_nome = new TDataGridColumn('pessoa->nome', 'Pessoa', 'left');
+        $column_atividades = new TDataGridColumn('id', 'Atividades', 'left');
+
+        $column_atividades->setTransformer([$this, 'on_inscricoes']);
 
         $order_id = new TAction(array($this, 'onReload'));
         $order_id->setParameter('order', 'id');
@@ -68,6 +71,7 @@ class InscricaoList extends TPage
         $this->datagrid->addColumn($column_id);
         $this->datagrid->addColumn($column_evento_nome);
         $this->datagrid->addColumn($column_pessoa_nome);
+        $this->datagrid->addColumn($column_atividades);
 
         $action_onEdit = new TDataGridAction(array('InscricaoForm', 'onEdit'));
         $action_onEdit->setUseButton(false);
@@ -110,6 +114,25 @@ class InscricaoList extends TPage
 
         parent::add($container);
 
+    }
+
+    public static function on_inscricoes($value)
+    {
+        TTransaction::open('eventtus');
+        $inscricao = Inscricao::find($value);
+        $atividades = $inscricao->getInscricaoAtividades();
+
+        if(!$atividades)
+        {
+            return "Sem atividades";
+        }
+        $a = [];
+        foreach ($atividades as $key => $value) {
+
+            $a[] = $value->atividade->nome;
+        }
+
+        return implode('<br>', $a);
     }
 
     public function onDelete($param = null) 

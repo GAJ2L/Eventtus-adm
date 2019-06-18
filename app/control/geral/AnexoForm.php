@@ -1,13 +1,15 @@
 <?php
 
-class NotificacaoEventoForm extends TPage
+class AnexoForm extends TPage
 {
     protected $form;
     private $formFields = [];
     private static $database = 'eventtus';
-    private static $activeRecord = 'NotificacaoEvento';
+    private static $activeRecord = 'Anexo';
     private static $primaryKey = 'id';
-    private static $formName = 'form_NotificacaoEvento';
+    private static $formName = 'form_Anexo';
+
+    use Adianti\Base\AdiantiFileSaveTrait;
 
     /**
      * Form constructor
@@ -20,39 +22,28 @@ class NotificacaoEventoForm extends TPage
         // creates the form
         $this->form = new BootstrapFormBuilder(self::$formName);
         // define the form title
-        $this->form->setFormTitle('Cadastro de notificação evento');
+        $this->form->setFormTitle('Cadastro de anexo');
 
 
         $id = new TEntry('id');
-        $evento_id = new TDBCombo('evento_id', 'eventtus', 'Evento', 'id', '{nome}','id asc'  );
-        $titulo = new TEntry('titulo');
-        $titulo_en = new TEntry('titulo_en');
-        $conteudo = new TText('conteudo');
-        $conteudo_en = new TText('conteudo_en');
+        $atividade_id = new TDBCombo('atividade_id', 'eventtus', 'Atividade', 'id', '{nome}','id asc'  );
+        $arquivo = new TFile('arquivo');
 
-        $evento_id->addValidation('Evento id', new TRequiredValidator()); 
-        $titulo->addValidation('Titulo', new TRequiredValidator()); 
-        $conteudo->addValidation('Conteudo', new TRequiredValidator()); 
+        $atividade_id->addValidation('Atividade id', new TRequiredValidator()); 
+        $arquivo->addValidation('arquivo', new TRequiredValidator()); 
 
+        $arquivo->enableFileHandling();
         $id->setEditable(false);
-        $id->setSize(250);
-        $titulo->setSize('100%');
-        $evento_id->setSize('100%');
-        $titulo_en->setSize('100%');
-        $conteudo->setSize('100%', 70);
-        $conteudo_en->setSize('100%', 70);
 
-        $row1 = $this->form->addFields([new TLabel('Código', null, '14px', null, '100%'),$id],[new TLabel('Evento', '#ff0000', '14px', null, '100%'),$evento_id]);
+        $id->setSize(250);
+        $arquivo->setSize('100%');
+        $atividade_id->setSize('100%');
+
+        $row1 = $this->form->addFields([new TLabel('Código', null, '14px', null, '100%'),$id],[new TLabel('Atividade', '#ff0000', '14px', null, '100%'),$atividade_id]);
         $row1->layout = [' col-sm-3',' col-sm-9'];
 
-        $row2 = $this->form->addFields([new TLabel('Titulo', '#ff0000', '14px', null, '100%'),$titulo],[new TLabel('Titulo EN', null, '14px', null, '100%'),$titulo_en]);
-        $row2->layout = ['col-sm-6','col-sm-6'];
-
-        $row3 = $this->form->addFields([new TLabel('Conteúdo', '#ff0000', '14px', null, '100%'),$conteudo]);
-        $row3->layout = [' col-sm-12'];
-
-        $row4 = $this->form->addFields([new TLabel('Conteúdo EN', null, '14px', null, '100%'),$conteudo_en]);
-        $row4->layout = [' col-sm-12'];
+        $row2 = $this->form->addFields([new TLabel('Arquivo', '#ff0000', '14px', null, '100%'),$arquivo]);
+        $row2->layout = [' col-sm-12'];
 
         // create the form actions
         $btn_onsave = $this->form->addAction('Salvar', new TAction([$this, 'onSave']), 'fa:floppy-o #ffffff');
@@ -64,7 +55,7 @@ class NotificacaoEventoForm extends TPage
         $container = new TVBox;
         $container->style = 'width: 100%';
         $container->class = 'form-container';
-        $container->add(TBreadCrumb::create(['Geral','Cadastro de notificação evento']));
+        // $container->add(new TXMLBreadCrumb('menu.xml', __CLASS__));
         $container->add($this->form);
 
         parent::add($container);
@@ -87,10 +78,22 @@ class NotificacaoEventoForm extends TPage
 
             $this->form->validate(); // validate form data
 
-            $object = new NotificacaoEvento(); // create an empty object 
+            $object = new Anexo(); // create an empty object 
 
             $data = $this->form->getData(); // get form data as array
             $object->fromArray( (array) $data); // load the object with data
+
+            $arquivo_dir = 'arquivos/'; 
+
+            $this->saveFile($object, $data, 'local', $arquivo_dir); 
+
+            $dados_file = json_decode(urldecode($data->arquivo));
+
+            $target_file = str_replace('tmp/', '', $dados_file->fileName);
+            $object->nome = $target_file;
+            $object->local = "arquivos/{$target_file}";
+            $object->tipo = filetype("arquivos/{$target_file}");
+            $object->tamanho = filesize("arquivos/{$target_file}");
 
             $object->store(); // save the object 
 
@@ -127,7 +130,7 @@ class NotificacaoEventoForm extends TPage
                 $key = $param['key'];  // get the parameter $key
                 TTransaction::open(self::$database); // open a transaction
 
-                $object = new NotificacaoEvento($key); // instantiates the Active Record 
+                $object = new Anexo($key); // instantiates the Active Record 
 
                 $this->form->setData($object); // fill the form 
 

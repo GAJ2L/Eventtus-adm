@@ -25,7 +25,7 @@ class PerguntaList extends TPage
         $this->form->setFormTitle('Listagem de perguntas');
 
 
-        $atividade_id = new TDBCombo('atividade_id', 'eventtus', 'Atividade', 'id', '{id}','id asc'  );
+        $atividade_id = new TDBCombo('atividade_id', 'eventtus', 'Atividade', 'id', '{nome}','id asc'  );
         $descricao = new TEntry('descricao');
 
         $descricao->setSize('100%');

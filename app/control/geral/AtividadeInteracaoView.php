@@ -22,15 +22,15 @@ class AtividadeInteracaoView extends TPage
          $this->form = new BootstrapFormBuilder(self::$formName);
          // define the form title
          $this->form->setFormTitle('Visualizar Perguntas');
-        $atividade_id = new TDBCombo('atividade_id', 'eventtus', 'Atividade', 'id', '{id}','id asc'  );
+        $atividade_id = new TDBCombo('atividade_id', 'eventtus', 'Atividade', 'id', '{nome}','id asc'  );
         $atividade_id->addValidation('Atividade', new TRequiredValidator()); 
         $atividade_id->setSize('100%');
 
         $row1 = $this->form->addFields([new TLabel('Atividade', '#ff0000', '14px', null, '100%'),$atividade_id]);
-        $row1->layout = [' col-sm-3',' col-sm-9'];
+        $row1->layout = [' col-sm-6'];
 
 
-        $btn_onload = $this->form->addAction('Visualizar perguntas', new TAction([$this, 'onLoad']), 'fa:floppy-o #ffffff');
+        $btn_onload = $this->form->addAction('Visualizar perguntas', new TAction([$this, 'onLoad'],['static' => 1]), 'fa:search #ffffff');
         $btn_onload->addStyleClass('btn-primary');
 
         // vertical box container
@@ -41,12 +41,9 @@ class AtividadeInteracaoView extends TPage
         $container->add($this->form);
 
         parent::add($container);
-
-        $this->html = new THtmlRenderer('app/resources/geral/atividade_interacao.html');
-        parent::add($this->html);
     }
 
-    public function onLoad($param)
+    public static function onLoad($param)
     {
         $criteria = new TCriteria;
         $criteria->add(new TFilter('atividade_id', '=', $param['atividade_id']));
@@ -75,9 +72,14 @@ class AtividadeInteracaoView extends TPage
         
         TTransaction::close();
 
-        $this->html->enableSection('main');
-        $this->html->enableSection('atividade', $param);
-        $this->html->enableSection('mensagem', $mensagens, TRUE);
+        $html = new THtmlRenderer('app/resources/geral/atividade_interacao.html');
+        $html->enableSection('main');
+        $html->enableSection('atividade', $param);
+        $html->enableSection('mensagem', $mensagens, TRUE);
+        
+        $window = TWindow::create($atividade->nome, 0.8, 0.8);
+        $window->add($html);
+        $window->show();
     }
     
     public static function onAprovar($param)

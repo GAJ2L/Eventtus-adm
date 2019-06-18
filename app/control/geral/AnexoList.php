@@ -1,15 +1,15 @@
 <?php
 
-class PerguntaList extends TPage
+class AnexoList extends TPage
 {
     private $form; // form
     private $datagrid; // listing
     private $pageNavigation;
     private $loaded;
     private static $database = 'eventtus';
-    private static $activeRecord = 'Pergunta';
+    private static $activeRecord = 'Anexo';
     private static $primaryKey = 'id';
-    private static $formName = 'formList_Pergunta';
+    private static $formName = 'formList_Anexo';
 
     /**
      * Class constructor
@@ -22,24 +22,17 @@ class PerguntaList extends TPage
         $this->form = new BootstrapFormBuilder(self::$formName);
 
         // define the form title
-        $this->form->setFormTitle('Listagem de perguntas');
+        $this->form->setFormTitle('Listagem de anexos');
 
 
-        $id = new TEntry('id');
         $atividade_id = new TDBCombo('atividade_id', 'eventtus', 'Atividade', 'id', '{nome}','id asc'  );
-        $descricao = new TEntry('descricao');
-        $descricao_en = new TEntry('descricao_en');
+        $nome = new TEntry('nome');
 
-        $id->setSize(100);
-        $descricao->setSize('70%');
-        $atividade_id->setSize('70%');
-        $descricao_en->setSize('70%');
+        $nome->setSize('100%');
+        $atividade_id->setSize('100%');
 
-        $row1 = $this->form->addFields([new TLabel('Id:', null, '14px', null, '100%'),$id],[new TLabel('Atividade id:', null, '14px', null, '100%'),$atividade_id]);
-        $row1->layout = ['col-sm-6','col-sm-6'];
-
-        $row2 = $this->form->addFields([new TLabel('Descricao:', null, '14px', null, '100%'),$descricao],[new TLabel('Descricao en:', null, '14px', null, '100%'),$descricao_en]);
-        $row2->layout = ['col-sm-6','col-sm-6'];
+        $row1 = $this->form->addFields([new TLabel('Atividade', null, '14px', null, '100%'),$atividade_id],[new TLabel('Nome', null, '14px', null, '100%'),$nome]);
+        $row1->layout = ['col-sm-6',' col-sm-6'];
 
         // keep the form filled during navigation with session data
         $this->form->setData( TSession::getValue(__CLASS__.'_filter_data') );
@@ -49,7 +42,7 @@ class PerguntaList extends TPage
 
         $btn_onexportcsv = $this->form->addAction('Exportar como CSV', new TAction([$this, 'onExportCsv']), 'fa:file-text-o #000000');
 
-        $btn_onshow = $this->form->addAction('Cadastrar', new TAction(['PerguntaForm', 'onShow']), 'fa:plus #69aa46');
+        $btn_onshow = $this->form->addAction('Cadastrar', new TAction(['AnexoForm', 'onShow']), 'fa:plus #69aa46');
 
         // creates a Datagrid
         $this->datagrid = new TDataGrid;
@@ -58,30 +51,25 @@ class PerguntaList extends TPage
         $this->datagrid->style = 'width: 100%';
         $this->datagrid->setHeight(320);
 
-        $column_id = new TDataGridColumn('id', 'Id', 'center' , '70px');
-        $column_atividade_id = new TDataGridColumn('atividade_id', 'Atividade id', 'left');
-        $column_descricao = new TDataGridColumn('descricao', 'Descricao', 'left');
-        $column_descricao_en = new TDataGridColumn('descricao_en', 'Descricao en', 'left');
+        $column_atividade_nome = new TDataGridColumn('atividade->nome', 'Atividade', 'left');
+        $column_nome = new TDataGridColumn('nome', 'Nome', 'left');
+        $column_tipo = new TDataGridColumn('tipo', 'Tipo', 'left');
+        $column_tamanho = new TDataGridColumn('tamanho', 'Tamanho', 'left');
+        $column_local = new TDataGridColumn('local', 'Arquivo', 'left');
 
-        $order_id = new TAction(array($this, 'onReload'));
-        $order_id->setParameter('order', 'id');
-        $column_id->setAction($order_id);
+        $column_local->setTransformer(function($value, $object){
 
-        $this->datagrid->addColumn($column_id);
-        $this->datagrid->addColumn($column_atividade_id);
-        $this->datagrid->addColumn($column_descricao);
-        $this->datagrid->addColumn($column_descricao_en);
+            return "<a target='__blank' href='{$value}'>{$object->nome}</a>";
+        });
 
-        $action_onEdit = new TDataGridAction(array('PerguntaForm', 'onEdit'));
-        $action_onEdit->setUseButton(false);
-        $action_onEdit->setButtonClass('btn btn-default btn-sm');
-        $action_onEdit->setLabel('Editar');
-        $action_onEdit->setImage('fa:pencil-square-o #478fca');
-        $action_onEdit->setField(self::$primaryKey);
+        $this->datagrid->disableDefaultClick();
+        $this->datagrid->addColumn($column_atividade_nome);
+        $this->datagrid->addColumn($column_nome);
+        $this->datagrid->addColumn($column_tipo);
+        $this->datagrid->addColumn($column_tamanho);
+        $this->datagrid->addColumn($column_local);
 
-        $this->datagrid->addAction($action_onEdit);
-
-        $action_onDelete = new TDataGridAction(array('PerguntaList', 'onDelete'));
+        $action_onDelete = new TDataGridAction(array('AnexoList', 'onDelete'));
         $action_onDelete->setUseButton(false);
         $action_onDelete->setButtonClass('btn btn-default btn-sm');
         $action_onDelete->setLabel('Excluir');
@@ -107,7 +95,7 @@ class PerguntaList extends TPage
         // vertical box container
         $container = new TVBox;
         $container->style = 'width: 100%';
-        $container->add(TBreadCrumb::create(['Geral','Perguntas']));
+        $container->add(TBreadCrumb::create(['Cadastros','Anexos']));
         $container->add($this->form);
         $container->add($panel);
 
@@ -187,7 +175,7 @@ class PerguntaList extends TPage
                 TTransaction::open(self::$database);
 
                 // instantiates object
-                $object = new Pergunta($key, FALSE); 
+                $object = new Anexo($key, FALSE); 
 
                 // deletes the object from the database
                 $object->delete();
@@ -231,28 +219,16 @@ class PerguntaList extends TPage
         TSession::setValue(__CLASS__.'_filter_data', NULL);
         TSession::setValue(__CLASS__.'_filters', NULL);
 
-        if (isset($data->id) AND ( (is_scalar($data->id) AND $data->id !== '') OR (is_array($data->id) AND (!empty($data->id)) )) )
-        {
-
-            $filters[] = new TFilter('id', '=', $data->id);// create the filter 
-        }
-
         if (isset($data->atividade_id) AND ( (is_scalar($data->atividade_id) AND $data->atividade_id !== '') OR (is_array($data->atividade_id) AND (!empty($data->atividade_id)) )) )
         {
 
             $filters[] = new TFilter('atividade_id', '=', $data->atividade_id);// create the filter 
         }
 
-        if (isset($data->descricao) AND ( (is_scalar($data->descricao) AND $data->descricao !== '') OR (is_array($data->descricao) AND (!empty($data->descricao)) )) )
+        if (isset($data->nome) AND ( (is_scalar($data->nome) AND $data->nome !== '') OR (is_array($data->nome) AND (!empty($data->nome)) )) )
         {
 
-            $filters[] = new TFilter('descricao', 'like', "%{$data->descricao}%");// create the filter 
-        }
-
-        if (isset($data->descricao_en) AND ( (is_scalar($data->descricao_en) AND $data->descricao_en !== '') OR (is_array($data->descricao_en) AND (!empty($data->descricao_en)) )) )
-        {
-
-            $filters[] = new TFilter('descricao_en', 'like', "%{$data->descricao_en}%");// create the filter 
+            $filters[] = new TFilter('nome', 'like', "%{$data->nome}%");// create the filter 
         }
 
         $param = array();
@@ -279,7 +255,7 @@ class PerguntaList extends TPage
             // open a transaction with database 'eventtus'
             TTransaction::open(self::$database);
 
-            // creates a repository for Pergunta
+            // creates a repository for Anexo
             $repository = new TRepository(self::$activeRecord);
             $limit = 20;
             // creates a criteria

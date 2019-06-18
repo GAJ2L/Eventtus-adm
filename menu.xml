@@ -4,48 +4,38 @@
     <icon>fa:archive fa-fw #0077b7</icon>
     <menu>
       <menuitem label="Inscrições">
-        <icon>fa:cog fa-fw</icon>
+        <icon>fa:circle-o fa-fw</icon>
         <action>InscricaoList#method=onShow</action>
       </menuitem>
       <menuitem label="Estatisticas">
-        <icon>fa:cog fa-fw </icon>
+        <icon>fa:circle-o fa-fw </icon>
         <action>EstatisiticaList#method=onShow</action>
       </menuitem>
        <menuitem label="Inscrições via CSV">
-        <icon>fa:cog fa-fw </icon>
+        <icon>fa:circle-o fa-fw </icon>
         <action>InscricaoUploadForm#method=onShow</action>
       </menuitem>
        <menuitem label="Aprovação de perguntas">
-        <icon>fa:envelope-o </icon>
+        <icon>fa:circle-o </icon>
         <action>AtividadeInteracaoSimpleList#method=onShow</action>
       </menuitem>
        <menuitem label="Perguntas recebidas">
-        <icon>fa:envelope-o </icon>
+        <icon>fa:circle-o </icon>
         <action>AtividadeInteracaoView#method=onShow</action>
       </menuitem>
 
 
       <menuitem label="Notificação Evento">
-        <icon>fa:envelope-o </icon>
+        <icon>fa:circle-o </icon>
         <action>NotificacaoEventoList#method=onShow</action>
       </menuitem>
 
       <menuitem label="Notificação Atividade">
-        <icon>fa:envelope-o </icon>
+        <icon>fa:circle-o </icon>
         <action>NotificacaoAtividadeList#method=onShow</action>
       </menuitem>
 
-      <menuitem label="Perguntas">
-        <icon>fa:envelope-o </icon>
-        <action>PerguntaList#method=onShow</action>
-      </menuitem>
 
-      <menuitem label="Opções">
-        <icon>fa:envelope-o </icon>
-        <action>OpcaoList#method=onShow</action>
-      </menuitem>
-      
-      
       
       
 
@@ -58,6 +48,12 @@
         <icon>fa:circle-o fa-fw </icon>
         <action>AtividadeList#method=onShow</action>
       </menuitem>
+      
+      <menuitem label="Anexo Atividade">
+        <icon>fa:circle-o </icon>
+        <action>AnexoList#method=onShow</action>
+      </menuitem>
+
       <menuitem label="Eventos">
         <icon>fa:circle-o fa-fw </icon>
         <action>EventoList#method=onShow</action>
@@ -66,6 +62,20 @@
         <icon>fa:circle-o fa-fw </icon>
         <action>PessoaList#method=onShow</action>
       </menuitem>
+
+      <menuitem label="Perguntas">
+        <icon>fa:circle-o </icon>
+        <action>PerguntaList#method=onShow</action>
+      </menuitem>
+
+      <menuitem label="Opções">
+        <icon>fa:circle-o </icon>
+        <action>OpcaoList#method=onShow</action>
+      </menuitem>
+
+
+      
+      
     </menu>
   </menuitem>
   <menuitem label="_t{Administration}">
@@ -104,7 +114,7 @@
         <action>SystemModulesCheckView</action>
       </menuitem>
       <menuitem label="_t{Preferences}">
-        <icon>fa:cog fa-fw</icon>
+        <icon>fa:circle-o fa-fw</icon>
         <action>SystemPreferenceForm#method=onEdit</action>
       </menuitem>
     </menu>

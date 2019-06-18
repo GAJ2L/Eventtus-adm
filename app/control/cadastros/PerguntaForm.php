@@ -26,10 +26,10 @@ class PerguntaForm extends TPage
 
 
         $id = new TEntry('id');
-        $atividade_id = new TDBCombo('atividade_id', 'eventtus', 'Atividade', 'id', '{id}','id asc'  );
+        $atividade_id = new TDBCombo('atividade_id', 'eventtus', 'Atividade', 'id', '{nome}','id asc'  );
         $descricao = new TEntry('descricao');
         $descricao_en = new TEntry('descricao_en');
-        $pergunta_opcao_pergunta_opcao_id = new TDBCombo('pergunta_opcao_pergunta_opcao_id', 'eventtus', 'Opcao', 'id', '{id}','id asc'  );
+        $pergunta_opcao_pergunta_opcao_id = new TDBCombo('pergunta_opcao_pergunta_opcao_id', 'eventtus', 'Opcao', 'id', '{descricao}','id asc'  );
         $pergunta_opcao_pergunta_id = new THidden('pergunta_opcao_pergunta_id');
 
         $atividade_id->addValidation('Atividade id', new TRequiredValidator()); 

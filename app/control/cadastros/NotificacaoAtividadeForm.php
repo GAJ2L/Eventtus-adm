@@ -24,7 +24,7 @@ class NotificacaoAtividadeForm extends TPage
 
 
         $id = new TEntry('id');
-        $atividade_id = new TDBCombo('atividade_id', 'eventtus', 'Atividade', 'id', '{id}','id asc'  );
+        $atividade_id = new TDBCombo('atividade_id', 'eventtus', 'Atividade', 'id', '{nome}','id asc'  );
         $titulo = new TEntry('titulo');
         $titulo_en = new TEntry('titulo_en');
         $conteudo = new TText('conteudo');

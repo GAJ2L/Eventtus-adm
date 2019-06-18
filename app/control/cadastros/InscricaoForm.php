@@ -26,7 +26,14 @@ class InscricaoForm extends TPage
         $id = new TEntry('id');
         $pessoa_id = new TDBCombo('pessoa_id', 'eventtus', 'Pessoa', 'id', '{nome}','id asc'  );
         $evento_id = new TDBCombo('evento_id', 'eventtus', 'Evento', 'id', '{nome}','id asc'  );
+        $evento_id->setChangeAction(new TAction([$this, 'onChangeEvento']));
+
         $codigo = new TEntry('codigo');
+
+        $atividade_id = new TSelect('atividade_id');
+        // $atividade_id->addValidation('Evento', new TRequiredValidator()); 
+        $atividade_id->setSize('100%');
+
 
         $pessoa_id->addValidation('Pessoa', new TRequiredValidator()); 
         $evento_id->addValidation('Evento', new TRequiredValidator()); 
@@ -46,6 +53,8 @@ class InscricaoForm extends TPage
         $row2 = $this->form->addFields([new TLabel('Evento', '#ff0000', '14px', null, '100%'),$evento_id],[new TLabel('Código sistema externo', '#ff0000', '14px', null, '100%'),$codigo]);
         $row2->layout = ['col-sm-6','col-sm-6'];
 
+        $row2 = $this->form->addFields([new TLabel('Atividades', '', '14px', null, '100%'),$atividade_id]);
+
         // create the form actions
         $btn_onsave = $this->form->addAction('Salvar', new TAction([$this, 'onSave']), 'fa:floppy-o #ffffff');
         $btn_onsave->addStyleClass('btn-primary'); 
@@ -63,6 +72,26 @@ class InscricaoForm extends TPage
         parent::add($container);
 
     }
+
+    public static function onChangeEvento($param)
+    {
+        TTransaction::open('eventtus');
+        $evento = new Evento($param['key']);
+        $atividades = $evento->getAtividades();
+        $a = [];
+        if($atividades)
+        {   
+            foreach ($atividades as $atividade)
+            {
+                $a[$atividade->id] = $atividade->nome;
+            }
+        }
+
+        TSelect::reload(self::$formName, 'atividade_id', $a);
+
+        TTransaction::close();
+    }
+
 
     public function onSave($param = null) 
     {
@@ -96,6 +125,18 @@ class InscricaoForm extends TPage
             // get the generated {PRIMARY_KEY}
             $data->id = $object->id; 
 
+            InscricaoAtividade::where('inscricao_id', '=', $object->id)->delete();
+
+            if($data->atividade_id)
+            {
+                foreach ($data->atividade_id as $key => $value) {
+                    $insc = new InscricaoAtividade();
+                    $insc->atividade_id = $value;
+                    $insc->inscricao_id = $object->id;
+                    $insc->store();
+                }
+            }
+
             $this->form->setData($data); // fill form data
             TTransaction::close(); // close the transaction
 
@@ -128,7 +169,24 @@ class InscricaoForm extends TPage
 
                 $object = new Inscricao($key); // instantiates the Active Record 
 
+                $a = [];
+                $atividades = $object->getInscricaoAtividades();
+                if($atividades)
+                {
+                    foreach ($atividades as $key => $value) {
+                        $a[] = $value->atividade->id;
+                        # code...
+                    }
+                }
+
+
                 $this->form->setData($object); // fill the form 
+
+                $data = new stdClass;
+                $data->evento_id = $object->evento_id;
+                $data->atividade_id =  $a;
+
+                TForm::sendData(self::$formName, $data);
 
                 TTransaction::close(); // close the transaction 
             }

@@ -31,7 +31,7 @@ class EstatisiticaList extends TPage
         $id->setMinLength(0);
         $id->setMask('{id} - {nome}');
 
-        $row1 = $this->form->addFields([new TLabel('Código:', null, '14px', null, '100%'),$id]);
+        $row1 = $this->form->addFields([new TLabel('Evento', null, '14px', null, '100%'),$id]);
         $row1->layout = ['col-sm-6'];
 
         // keep the form filled during navigation with session data

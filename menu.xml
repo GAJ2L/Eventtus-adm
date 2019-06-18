@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu>
   <menuitem label="Geral">
-    <icon>fa:archive fa-fw </icon>
+    <icon>fa:archive fa-fw #0077b7</icon>
     <menu>
       <menuitem label="Inscrições">
-        <icon>fa:cog fa-fw </icon>
+        <icon>fa:cog fa-fw</icon>
         <action>InscricaoList#method=onShow</action>
       </menuitem>
       <menuitem label="Estatisticas">
@@ -23,6 +23,31 @@
         <icon>fa:envelope-o </icon>
         <action>AtividadeInteracaoView#method=onShow</action>
       </menuitem>
+
+
+      <menuitem label="Notificação Evento">
+        <icon>fa:envelope-o </icon>
+        <action>NotificacaoEventoList#method=onShow</action>
+      </menuitem>
+
+      <menuitem label="Notificação Atividade">
+        <icon>fa:envelope-o </icon>
+        <action>NotificacaoAtividadeList#method=onShow</action>
+      </menuitem>
+
+      <menuitem label="Perguntas">
+        <icon>fa:envelope-o </icon>
+        <action>PerguntaList#method=onShow</action>
+      </menuitem>
+
+      <menuitem label="Opções">
+        <icon>fa:envelope-o </icon>
+        <action>OpcaoList#method=onShow</action>
+      </menuitem>
+      
+      
+      
+      
 
     </menu>
   </menuitem>

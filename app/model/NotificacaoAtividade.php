@@ -8,8 +8,6 @@ class NotificacaoAtividade extends TRecord
 
     private $atividade;
 
-    
-
     /**
      * Constructor method
      */
@@ -23,7 +21,7 @@ class NotificacaoAtividade extends TRecord
         parent::addAttribute('conteudo_en');
         parent::addAttribute('logo');
         parent::addAttribute('dt_notificacao');
-            
+    
     }
 
     /**
@@ -53,6 +51,15 @@ class NotificacaoAtividade extends TRecord
         return $this->atividade;
     }
 
+    public function store()
+    {
+        if(!$this->id)
+        {
+            $this->dt_notificacao = date("Y-m-d H:i:s");
+        }
     
+        parent::store();
+    }
+
 }
 

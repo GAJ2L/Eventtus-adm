@@ -25,11 +25,11 @@ class EstatisiticaList extends TPage
         $this->form->setFormTitle('Estatísticas');
 
 
-        $id = new TDBUniqueSearch('id', 'eventtus', 'Evento', 'id', 'id','id asc'  );
+        $id = new TDBUniqueSearch('id', 'eventtus', 'Evento', 'id', 'nome','id asc'  );
 
         $id->setSize('100%');
         $id->setMinLength(0);
-        $id->setMask('{nome}');
+        $id->setMask('{id} - {nome}');
 
         $row1 = $this->form->addFields([new TLabel('Código:', null, '14px', null, '100%'),$id]);
         $row1->layout = ['col-sm-6'];
@@ -97,17 +97,17 @@ class EstatisiticaList extends TPage
         $this->pageNavigation->setAction(new TAction(array($this, 'onReload')));
         $this->pageNavigation->setWidth($this->datagrid->getWidth());
 
-        $panel = new TPanelGroup;
-        $panel->add($this->datagrid);
+        // $panel = new TPanelGroup;
+        // $panel->add($this->datagrid);
 
-        $panel->addFooter($this->pageNavigation);
+        // $panel->addFooter($this->pageNavigation);
 
         // vertical box container
         $container = new TVBox;
         $container->style = 'width: 100%';
         $container->add(TBreadCrumb::create(['Cadastros','Estatísticas']));
         $container->add($this->form);
-        $container->add($panel);
+        // $container->add($panel);
 
         parent::add($container);
 
@@ -134,6 +134,7 @@ class EstatisiticaList extends TPage
         $param = array();
         $param['offset']     = 0;
         $param['first_page'] = 1;
+        $param['aqui'] = 1;
 
         // fill the form with data again
         $this->form->setData($data);
@@ -152,6 +153,10 @@ class EstatisiticaList extends TPage
     {
         try
         {
+            if(empty($param['aqui']))
+            {
+                return;
+            }
             // open a transaction with database 'eventtus'
             TTransaction::open(self::$database);
 
@@ -191,9 +196,65 @@ class EstatisiticaList extends TPage
                 // iterate the collection of active records
                 foreach ($objects as $object)
                 {
-                    // add the object inside the datagrid
+                    $avalicaoes = AvaliacaoEvento::where("inscricao_id", " IN ", "NOESC: (SELECT id FROM inscricao WHERE  evento_id = {$object->id})")->get();
 
-                    $this->datagrid->addItem($object);
+                    $media = 0;
+                    if(!empty($avalicaoes))
+                    {
+                        $soma = 0;
+
+                        foreach($avalicaoes as $avalicao) 
+                        {
+                            $soma += ($avalicao->estrelas??0);
+                        }
+
+                        $media = ($soma/count($avalicaoes));
+                        
+                    }
+
+                    // add the object inside the datagrid
+                    $div = new TElement('div');
+                    $div->class = 'col-sm-4';
+                    $div->add('<div class="info-box bg-pink hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">star</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">MÉDIA DE AVALIAÇÕES</div>
+                            <div class="number count-to" data-from="0" data-to="'.$media.'" data-speed="15" data-fresh-interval="20">'.$media.'</div>
+                        </div>
+                    </div>');
+                    
+                    parent::add($div);
+                    $count = AvaliacaoEvento::where("inscricao_id", " IN ", "NOESC: (SELECT id FROM inscricao WHERE  evento_id = {$object->id})")->count();
+                    $div = new TElement('div');
+                    $div->class = 'col-sm-4';
+                    $div->add('<div class="info-box bg-light-green hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">forum</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">QUANTIDADE DE VOTOS</div>
+                            <div class="number count-to" data-from="0" data-to="'.$count.'" data-speed="1000" data-fresh-interval="20">'.$count.'</div>
+                        </div>
+                    </div>');
+
+                    parent::add($div);
+                    $insc = Inscricao::where("evento_id", "=", $object->id)->count();
+                    $div = new TElement('div');
+                    $div->class = 'col-sm-4';
+                    $div->add('<div class="info-box bg-orange hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">person_add</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">INSCRITOS</div>
+                            <div class="number count-to" data-from="0" data-to="'.$insc.'" data-speed="1000" data-fresh-interval="20">'.$insc.'</div>
+                        </div>
+                    </div>');
+
+                    parent::add($div);
+                    return;
 
                 }
             }
